@@ -2,6 +2,34 @@
     <string name="app_name">Reddit</string>
     <string name="title_activity_main2">Main2Activity</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string-array name="default_subreddits">
+        <item>FRONTPAGE</item>
+        <item>ADVICEANIMALS</item>
+        <item>ANNOUNCEMENTS</item>
+        <item>ASKREDDIT</item>
+        <item>ASKSCIENCE</item>
+        <item>AWW</item>
+        <item>BESTOF</item>
+        <item>BLOG</item>
+        <item>BOOKS</item>
+        <item>BUILDAPC</item>
+        <item>COMPUTERS</item>
+        <item>EARTHPORN</item>
+        <item>EXPLAINLIKEIMFIVE</item>
+        <item>FUNNY</item>
+        <item>GAMING</item>
+        <item>GIFS</item>
+        <item>IAMA</item>
+        <item>MOVIES</item>
+        <item>MUSIC</item>
+        <item>NEWS</item>
+        <item>PICS</item>
+        <item>SCIENCE</item>
+        <item>TECHNOLOGY</item>
+        <item>TELEVISION</item>
+        <item>TODAYILEARNED</item>
+        <item>VIDEOS</item>
+        <item>WORLDNEWS</item>
+        <item>WTF</item>
+    </string-array>
 </resources>

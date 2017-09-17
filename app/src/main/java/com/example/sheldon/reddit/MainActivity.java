@@ -10,7 +10,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 
 import com.example.sheldon.reddit.Models.Post;
 import com.example.sheldon.reddit.Utils.JsonParser;
@@ -30,9 +34,11 @@ public class MainActivity extends AppCompatActivity{
     private Context mContext;
     private ListView mlistView ;
     private ArrayList<Post> mPosts;
+    private Spinner mSpinner;
     private PostsArrayAdapter mAdapter;
     private SwipeRefreshLayout mSwipeRefreshLayout;
-    private static final String mJsonUrl = "https://www.reddit.com/.json";
+    private String mSubredditPath = "";
+    private static final String URL_BASE = "https://www.reddit.com/";
     private static final int DIVIDER_HEIGHT = 10;
 
     @Override
@@ -40,23 +46,50 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mContext = this;
+        mSpinner = (Spinner) findViewById(R.id.spinner_activity_main);
+        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String selectedItem = (String)adapterView.getItemAtPosition(i);
+                Log.d("MainActivity", "onItemSelected: Item selected is " + selectedItem);
+                if(selectedItem.equals("FRONTPAGE")) {
+                    mSubredditPath = "";
+                }
+                else {
+                    mSubredditPath = "r/" + selectedItem;
+                }
+                loadPage(URL_BASE + mSubredditPath + ".json");
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
         mlistView = (ListView)findViewById(R.id.listviewSubreddit);
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.layoutSwipeRefresh);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                reloadPage();
+                loadPage(URL_BASE + mSubredditPath + ".json");
             }
         });
 
-        new MyTask().execute(mJsonUrl);
+        initializeSpinner();
+        new MyTask().execute(URL_BASE + mSubredditPath + ".json");
+    }
+
+    private void initializeSpinner() {
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.default_subreddits, R.layout.spinner_item);
+        mSpinner.setAdapter(adapter);
     }
 
     /**
      * Acquire json again and update the listview adapter
      */
-    private void reloadPage() {
-        new MyTask().execute(mJsonUrl);
+    private void loadPage(String path) {
+        new MyTask().execute(path);
         mSwipeRefreshLayout.setRefreshing(false);
     }
 
