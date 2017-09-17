@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_listitem"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/textPostScore"
+        android:layout_width="66dp"
+        android:layout_height="34dp"
+        android:text="29.0K"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textPostAuthor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="generalwongfu"
+        android:textAlignment="center"
+        android:textColor="@android:color/holo_blue_dark"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toRightOf="@+id/textPostScore"
+        app:layout_constraintBottom_toBottomOf="@+id/textPostScore"
+        android:layout_marginBottom="8dp" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="in"
+        android:textAlignment="center"
+        app:layout_constraintLeft_toRightOf="@+id/textPostAuthor"
+        android:layout_marginLeft="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textPostScore"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="5dp" />
+
+    <TextView
+        android:id="@+id/textPostSR"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="videos"
+        android:textColor="@android:color/holo_blue_dark"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toRightOf="@+id/textView4"
+        android:layout_marginLeft="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textPostScore"
+        android:layout_marginBottom="9dp"
+        android:layout_marginStart="5dp" />
+
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="0dp"
+        android:layout_height="17dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:text="Comments"
+        android:textSize="11sp"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/textPostComments"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/postTextTitle"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/textPostComments"
+        android:layout_width="0dp"
+        android:layout_height="17dp"
+        android:layout_marginLeft="0dp"
+        android:text="80"
+        android:textSize="11sp"
+        android:textAlignment="center"
+        app:layout_constraintLeft_toLeftOf="@+id/postTextTitle"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/postTextTitle" />
+
+    <TextView
+        android:id="@+id/textPostDomain"
+        android:layout_width="0dp"
+        android:layout_height="17dp"
+        android:layout_marginLeft="11dp"
+        android:layout_marginStart="11dp"
+        android:text="media.giphy.com"
+        android:textSize="11sp"
+        android:textAlignment="center"
+        app:layout_constraintLeft_toRightOf="@+id/textView6"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/postTextTitle" />
+
+    <TextView
+        android:id="@+id/postTextTime"
+        android:layout_width="wrap_content"
+        android:layout_height="17dp"
+        android:layout_marginStart="13dp"
+        android:textSize="11sp"
+        android:text="2hrs"
+        android:textAlignment="center"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/postTextTitle"
+        app:layout_constraintLeft_toRightOf="@+id/textPostDomain"
+        android:layout_marginLeft="14dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/postTextTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="9dp"
+        android:text="Lorem ipsum dolor sit amet, cu ius mucius semper, ea mentitum dignissim honestatis pro. Commodo regione aliquando usu ex, per rebum signiferumque an. Ei nec atqui consul adipisci, est ut mediocritatem concludaturque. Vivendum eloquentiam reformidans ut mel, eu nam rebum iudico quaerendum, vix esse iuvaret in. Sea regione impedit offendit no.  His enim mandamus te, eum quis nihil ex. Ocurreret laboramus usu in, his an brute modus disputando, vix no partem praesent. Suas electram argumentum vix ea. Usu saepe dolorum suavitate in. Liber errem ignota his ei.  Id tale soleat detraxit eam. Debet explicari ea cum. Audiam repudiare dissentias id his, ubique assentior theophrastus per ea. Paulo vivendum abhorreant nam ne. Prima adhuc consectetuer sea eu, veritus dissentias comprehensam usu ex.  Veniam albucius id duo, vix ludus melius id. faci"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/postImageThumbnail"
+        app:layout_constraintTop_toBottomOf="@+id/textPostScore" />
+
+    <ImageView
+        android:id="@+id/postImageThumbnail"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginEnd="16dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintRight_toRightOf="parent"
+        app:srcCompat="@drawable/thumbnail_placeholder"
+        tools:layout_constraintBottom_creator="1"
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintTop_creator="1"
+        android:layout_marginRight="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="8dp" />
+
+</android.support.constraint.ConstraintLayout>

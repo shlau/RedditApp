@@ -28,6 +28,13 @@ dependencies {
     // https://mvnrepository.com/artifact/commons-io/commons-io
     compile group: 'commons-io', name: 'commons-io', version: '2.5'
 
+    // https://mvnrepository.com/artifact/com.squareup.picasso/picasso
+    compile group: 'com.squareup.picasso', name: 'picasso', version: '2.5.2'
+
+    // https://mvnrepository.com/artifact/com.ocpsoft/ocpsoft-pretty-time
+    compile group: 'com.ocpsoft', name: 'ocpsoft-pretty-time', version: '1.0.7'
+
+
     compile 'com.android.support:appcompat-v7:26.+'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.support:design:26.+'

@@ -29,6 +29,22 @@ public class Post {
         this.mCreatedUtc = mCreatedUtc;
     }
 
+    @Override
+    public String toString() {
+        return "Post{" +
+                "mScore=" + mScore +
+                ", mTitle='" + mTitle + '\'' +
+                ", mNumComments=" + mNumComments +
+                ", mDomain='" + mDomain + '\'' +
+                ", mSubredit='" + mSubredit + '\'' +
+                ", mClicked=" + mClicked +
+                ", mOverEighteen=" + mOverEighteen +
+                ", mThumbnail='" + mThumbnail + '\'' +
+                ", mAuthor='" + mAuthor + '\'' +
+                ", mCreatedUtc='" + mCreatedUtc + '\'' +
+                '}';
+    }
+
     public Post() {
     }
 

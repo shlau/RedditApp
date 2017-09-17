@@ -1,14 +1,21 @@
 package com.example.sheldon.reddit;
 
+import android.content.Context;
 import android.content.Intent;
 
 import android.os.AsyncTask;
+import android.support.constraint.ConstraintLayout;
+import android.support.constraint.ConstraintSet;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ViewGroup;
+import android.widget.ListView;
 
+import com.example.sheldon.reddit.Models.Post;
 import com.example.sheldon.reddit.Utils.JsonParser;
+import com.example.sheldon.reddit.Utils.PostsArrayAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,17 +23,27 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 
 import static android.content.ContentValues.TAG;
 
 
 public class MainActivity extends AppCompatActivity {
 
+    private Context mContext;
+    private ListView mlistView ;
+    private ArrayList<Post> posts;
     private static String TAG = "MainActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        new MyTask().execute("https://www.reddit.com/r/AskReddit/top.json?sort=top&t=all");
+        setContentView(R.layout.activity_main);
+        mContext = this;
+        mlistView = (ListView)findViewById(R.id.listviewSubreddit);
+        if(mlistView == null) {
+            Log.d(TAG, "onCreate: listview null before execute");
+        }
+        new MyTask().execute("https://www.reddit.com/top/.json?sort=top&t=all");
     }
 
     private class MyTask extends AsyncTask<String, Void, JSONObject> {
@@ -46,23 +63,13 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(JSONObject jsonObject) {
-            try{
-                JSONObject data= jsonObject.getJSONObject("data");
-                JSONArray children=data.getJSONArray("children");
-
-                //Using this property we can fetch the next set of
-                //posts from the same subreddit
-
-                for(int i=0;i<children.length();i++){
-                    JSONObject cur=children.getJSONObject(i)
-                            .getJSONObject("data");
-                    Log.d(TAG, "onPostExecute: " +cur.optString("title"));
-
-                }
-            }catch(Exception e){
-                Log.e("fetchPosts()",e.toString());
+            try {
+                posts = JsonParser.getPosts(jsonObject);
+                PostsArrayAdapter adapter = new PostsArrayAdapter(mContext, R.layout.list_item_post, posts);
+                mlistView.setAdapter(adapter);
+            } catch (JSONException e1) {
+                e1.printStackTrace();
             }
-//            Log.d(TAG, "onPostExecute: " + jsonObject.toString());
         }
     }
 
