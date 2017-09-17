@@ -2,6 +2,7 @@ package com.example.sheldon.reddit.Models;
 
 /**
  * Created by sheldon on 9/15/2017.
+ * A model that represents a subreddit post
  */
 
 public class Post {

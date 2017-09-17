@@ -1,11 +1,9 @@
 package com.example.sheldon.reddit.Utils;
 
 import android.content.Context;
-import android.media.Image;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,15 +16,14 @@ import com.example.sheldon.reddit.Models.Post;
 import com.example.sheldon.reddit.R;
 import com.squareup.picasso.Picasso;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
-import java.util.List;
+
 
 import static android.content.ContentValues.TAG;
 
 /**
  * Created by sheldon on 9/16/2017.
+ * Custom arrayadapter representing a subreddit page post structure
  */
 
 public class PostsArrayAdapter extends ArrayAdapter<Post>{
@@ -47,25 +44,35 @@ public class PostsArrayAdapter extends ArrayAdapter<Post>{
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.list_item_post, parent, false);
-        TextView author = (TextView) rowView.findViewById(R.id.textPostAuthor);
+
+        TextView author =  rowView.findViewById(R.id.textPostAuthor);
         author.setText(mPosts.get(position).getmAuthor());
-        TextView score = (TextView) rowView.findViewById(R.id.textPostScore);
+        TextView score =  rowView.findViewById(R.id.textPostScore);
         score.setText(String.valueOf(mPosts.get(position).getmScore()));
-        TextView subreddit = (TextView) rowView.findViewById(R.id.textPostSR);
+        TextView subreddit =  rowView.findViewById(R.id.textPostSR);
         subreddit.setText(mPosts.get(position).getmSubredit());
-        TextView title = (TextView) rowView.findViewById(R.id.postTextTitle);
+        TextView title =  rowView.findViewById(R.id.postTextTitle);
         title.setText(mPosts.get(position).getmTitle());
-        TextView comments = (TextView) rowView.findViewById(R.id.textPostComments);
+        TextView comments =  rowView.findViewById(R.id.textPostComments);
         comments.setText(String.valueOf(mPosts.get(position).getmNumComments()));
-        TextView domain = (TextView) rowView.findViewById(R.id.textPostDomain);
+        TextView domain =  rowView.findViewById(R.id.textPostDomain);
         domain.setText(mPosts.get(position).getmDomain());
-        TextView time = (TextView) rowView.findViewById(R.id.postTextTime);
+        TextView time =  rowView.findViewById(R.id.postTextTime);
+
+        // get epoch of post and convert to time passed
         String utc = mPosts.get(position).getmCreatedUtc();
-        Log.d(TAG, "getView: Time passed is " + (Double.valueOf(utc)).longValue());
         time.setText(TimeConverter.timePassed((Double.valueOf(utc)).longValue()));
 
-        ImageView thumbnail = (ImageView) rowView.findViewById(R.id.postImageThumbnail);
-        Picasso.with(mContext).load(mPosts.get(position).getmThumbnail()).into(thumbnail);
+        ImageView thumbnail = rowView.findViewById(R.id.postImageThumbnail);
+        String thumbnailLink = mPosts.get(position).getmThumbnail();
+
+        // hide imageview if there is no thumbnail image
+        if(!thumbnailLink.equals("self") && !thumbnailLink.equals("default")) {
+            Picasso.with(mContext).load(mPosts.get(position).getmThumbnail()).into(thumbnail);
+        }
+        else {
+            thumbnail.setVisibility(View.GONE);
+        }
 
         return rowView;
     }

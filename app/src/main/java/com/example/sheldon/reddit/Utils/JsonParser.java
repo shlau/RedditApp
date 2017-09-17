@@ -19,17 +19,30 @@ import static android.content.ContentValues.TAG;
 
 /**
  * Created by sheldon on 9/15/2017.
+ * Functions that reads and parses json from a url into Post models
  */
 
 public class JsonParser {
     public JsonParser() {
     }
 
-    public void test(){}
+    /**
+     * Puts json into a JSONobject
+     * @param url The url address we want to read json from
+     * @return a JSONobject representing the json from the url
+     * @throws IOException
+     * @throws JSONException
+     */
     public static JSONObject getJSON(String url) throws IOException, JSONException {
         return new JSONObject(IOUtils.toString( new URL(url), Charset.forName("UTF-8")));
     }
 
+    /**
+     * Parses json to store corresponding data into an arraylist of Post models
+     * @param json the JSONobject containing the data
+     * @return  an arraylist of posts
+     * @throws JSONException
+     */
     public static ArrayList<Post> getPosts(JSONObject json) throws JSONException {
         JSONObject data = json.getJSONObject("data");
         JSONArray children = data.getJSONArray("children");
