@@ -16,18 +16,20 @@ public class Post {
     private String mThumbnail;
     private String mAuthor;
     private String mCreatedUtc;
+    private String mPermalink;
 
-    public Post(int mScore, String mTitle, int mNumComments, String mDomain, String mSubredit, boolean mClicked, boolean mOverEighteen, String mThumbnail, String mAuthor, String mCreatedUtc) {
+    public Post(int mScore, String mTitle, int mNumComments, String mDomain, String mSubreddit, boolean mClicked, boolean mOverEighteen, String mThumbnail, String mAuthor, String mCreatedUtc, String mPermalink) {
         this.mScore = mScore;
         this.mTitle = mTitle;
         this.mNumComments = mNumComments;
         this.mDomain = mDomain;
-        this.mSubredit = mSubredit;
+        this.mSubredit = mSubreddit;
         this.mClicked = mClicked;
         this.mOverEighteen = mOverEighteen;
         this.mThumbnail = mThumbnail;
         this.mAuthor = mAuthor;
         this.mCreatedUtc = mCreatedUtc;
+        this.mPermalink = mPermalink;
     }
 
     @Override
@@ -49,6 +51,13 @@ public class Post {
     public Post() {
     }
 
+    public String getmPermalink() {
+        return mPermalink;
+    }
+
+    public void setmPermalink(String mPermalink) {
+        this.mPermalink = mPermalink;
+    }
     public int getmScore() {
         return mScore;
     }

@@ -54,6 +54,7 @@ public class JsonParser {
                     .getJSONObject("data");
 
             Post post = new Post();
+            post.setmPermalink(cur.optString("permalink"));
             post.setmClicked(Boolean.valueOf(cur.optString("clicked")));
             post.setmAuthor(cur.optString("author"));
             post.setmCreatedUtc(cur.optString("created_utc"));

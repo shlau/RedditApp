@@ -67,6 +67,7 @@ public class PostsArrayAdapter extends ArrayAdapter<Post>{
         Log.d(TAG, "getView: title is " + mPosts.get(position).getmTitle());
         String thumbnailLink = mPosts.get(position).getmThumbnail();
         Log.d(TAG, "getView: thumbnailLink is " + thumbnailLink);
+
         // hide imageview if there is no thumbnail image
         if(!thumbnailLink.equals("self") && !thumbnailLink.equals("default") && !thumbnailLink.equals("")) {
             Picasso.with(mContext).load(mPosts.get(position).getmThumbnail()).into(thumbnail);
