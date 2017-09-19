@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -38,8 +39,14 @@ public class MainActivity extends AppCompatActivity{
     private PostsArrayAdapter mAdapter;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private String mSubredditPath = "";
-    private static final String URL_BASE = "https://www.reddit.com/";
+    private String nextPageQuery = "";
+    private boolean loading = true;
+    private int previousTotalCount = 0;
+    private int mPostCount = 25;
+
+    private static final String URL_FORMAT = "https://www.reddit.com%s/.json?count=%d&after=%s";
     private static final int DIVIDER_HEIGHT = 10;
+    private static final int POST_INTERVAL = 25;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,14 +58,17 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String selectedItem = (String)adapterView.getItemAtPosition(i);
+                mPostCount = POST_INTERVAL;
                 Log.d("MainActivity", "onItemSelected: Item selected is " + selectedItem);
                 if(selectedItem.equals("FRONTPAGE")) {
                     mSubredditPath = "";
                 }
                 else {
-                    mSubredditPath = "r/" + selectedItem;
+                    mSubredditPath = "/r/" + selectedItem;
                 }
-                loadPage(URL_BASE + mSubredditPath + ".json");
+
+                Log.d("MainActivity", "onItemSelected: string format is " + String.format(URL_FORMAT,mSubredditPath,POST_INTERVAL, ""));
+                loadPage(String.format(URL_FORMAT,mSubredditPath,POST_INTERVAL, ""));
             }
 
             @Override
@@ -68,21 +78,51 @@ public class MainActivity extends AppCompatActivity{
         });
 
         mlistView = (ListView)findViewById(R.id.listviewSubreddit);
+        mlistView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView absListView, int i) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView absListView, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if(loading) {
+                    if(totalItemCount > previousTotalCount) {
+                        loading = false;
+                        previousTotalCount = totalItemCount;
+                    }
+                }
+                if(!loading && firstVisibleItem + visibleItemCount >= totalItemCount) {
+                    updateList(nextPageQuery);
+                    loading = true;
+                    Log.d("MainActivity", "onScroll: reached end of list");
+                }
+            }
+        });
+
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.layoutSwipeRefresh);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                loadPage(URL_BASE + mSubredditPath + ".json");
+                loadPage(String.format(URL_FORMAT,mSubredditPath,POST_INTERVAL, ""));
             }
         });
 
         initializeSpinner();
-        new MyTask().execute(URL_BASE + mSubredditPath + ".json");
+        loadPage(String.format(URL_FORMAT,mSubredditPath,POST_INTERVAL, nextPageQuery));
     }
 
+    /**
+     * Initialize spinner to change subreddits
+     */
     private void initializeSpinner() {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.default_subreddits, R.layout.spinner_item);
         mSpinner.setAdapter(adapter);
+    }
+
+    private void updateList(String after) {
+        mPostCount += POST_INTERVAL;
+        loadPage(String.format(URL_FORMAT,mSubredditPath,POST_INTERVAL, nextPageQuery));
     }
 
     /**
@@ -114,10 +154,24 @@ public class MainActivity extends AppCompatActivity{
         @Override
         protected void onPostExecute(JSONObject jsonObject) {
             try {
-                mPosts = JsonParser.getPosts(jsonObject);
-                mAdapter = new PostsArrayAdapter(mContext, R.layout.list_item_post, mPosts);
+                nextPageQuery = JsonParser.getNextPageListing(jsonObject);
+
+                if(mPostCount > POST_INTERVAL) {
+                    ArrayList<Post> morePosts = JsonParser.getPosts(jsonObject);
+                    mPosts.addAll(morePosts);
+                    mAdapter.notifyDataSetChanged();
+
+
+                }
+                else {
+                    mPosts = JsonParser.getPosts(jsonObject);
+                    mAdapter = new PostsArrayAdapter(mContext, R.layout.list_item_post, mPosts);
+                    mlistView.setAdapter(mAdapter);
+                }
+
                 mlistView.setDividerHeight(DIVIDER_HEIGHT);
-                mlistView.setAdapter(mAdapter);
+
+
             } catch (JSONException e1) {
                 e1.printStackTrace();
             }

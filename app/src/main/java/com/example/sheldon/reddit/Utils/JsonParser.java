@@ -71,4 +71,11 @@ public class JsonParser {
         }
         return posts;
     }
+
+    public static String getNextPageListing(JSONObject json) throws JSONException {
+        JSONObject data = json.getJSONObject("data");
+        String after = data.optString("after");
+        Log.d(TAG, "getNextPageListing: after is " + after);
+        return after;
+    }
 }
