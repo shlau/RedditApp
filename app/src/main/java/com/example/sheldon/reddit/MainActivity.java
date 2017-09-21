@@ -69,6 +69,7 @@ public class MainActivity extends AppCompatActivity{
 
                 Log.d("MainActivity", "onItemSelected: string format is " + String.format(URL_FORMAT,mSubredditPath,POST_INTERVAL, ""));
                 loadPage(String.format(URL_FORMAT,mSubredditPath,POST_INTERVAL, ""));
+                previousTotalCount = 0;
             }
 
             @Override
@@ -86,6 +87,9 @@ public class MainActivity extends AppCompatActivity{
 
             @Override
             public void onScroll(AbsListView absListView, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                Log.d("MainActivity", "onScroll: loading is " + loading);
+                Log.d("MainActivity", "onScroll: totalItemCount is " + totalItemCount);
+                Log.d("MainActivity", "onScroll: previousTotalCount is " + previousTotalCount);
                 if(loading) {
                     if(totalItemCount > previousTotalCount) {
                         loading = false;

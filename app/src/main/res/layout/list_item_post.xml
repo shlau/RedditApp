@@ -49,10 +49,13 @@
         android:textColor="@android:color/holo_blue_dark"
         android:textStyle="bold"
         app:layout_constraintLeft_toRightOf="@+id/textView4"
-        android:layout_marginLeft="5dp"
+        android:layout_marginLeft="4dp"
         app:layout_constraintBottom_toBottomOf="@+id/textPostScore"
-        android:layout_marginBottom="9dp"
-        android:layout_marginStart="5dp" />
+        android:layout_marginBottom="7dp"
+        android:layout_marginStart="5dp"
+        app:layout_constraintRight_toLeftOf="@+id/postImageThumbnail"
+        android:layout_marginRight="8dp"
+        app:layout_constraintHorizontal_bias="0.0" />
 
 
     <TextView
