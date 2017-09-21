@@ -127,6 +127,7 @@ public class MainActivity extends AppCompatActivity{
     private void updateList(String after) {
         mPostCount += POST_INTERVAL;
         loadPage(String.format(URL_FORMAT,mSubredditPath,POST_INTERVAL, nextPageQuery));
+        Log.d("MainActivity", "updateList: query is " + String.format(URL_FORMAT,mSubredditPath,POST_INTERVAL, nextPageQuery));
     }
 
     /**
@@ -158,9 +159,12 @@ public class MainActivity extends AppCompatActivity{
         @Override
         protected void onPostExecute(JSONObject jsonObject) {
             try {
-                nextPageQuery = JsonParser.getNextPageListing(jsonObject);
-
-                if(mPostCount > POST_INTERVAL) {
+                String query =  JsonParser.getNextPageListing(jsonObject);
+                if(query.equals(nextPageQuery)) {
+                    return;
+                }
+                nextPageQuery = query;
+               if(mPostCount > POST_INTERVAL) {
                     ArrayList<Post> morePosts = JsonParser.getPosts(jsonObject);
                     mPosts.addAll(morePosts);
                     mAdapter.notifyDataSetChanged();

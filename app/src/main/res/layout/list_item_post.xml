@@ -27,7 +27,8 @@
         android:textStyle="bold"
         app:layout_constraintLeft_toRightOf="@+id/textPostScore"
         app:layout_constraintBottom_toBottomOf="@+id/textPostScore"
-        android:layout_marginBottom="8dp" />
+        android:layout_marginBottom="8dp"
+        android:textSize="10sp"/>
 
     <TextView
         android:id="@+id/textView4"
@@ -39,7 +40,8 @@
         android:layout_marginLeft="5dp"
         app:layout_constraintBottom_toBottomOf="@+id/textPostScore"
         android:layout_marginBottom="8dp"
-        android:layout_marginStart="5dp" />
+        android:layout_marginStart="5dp"
+        android:textSize="10sp"/>
 
     <TextView
         android:id="@+id/textPostSR"
@@ -55,7 +57,8 @@
         android:layout_marginStart="5dp"
         app:layout_constraintRight_toLeftOf="@+id/postImageThumbnail"
         android:layout_marginRight="8dp"
-        app:layout_constraintHorizontal_bias="0.0" />
+        app:layout_constraintHorizontal_bias="0.0"
+        android:textSize="10sp"/>
 
 
     <TextView
