@@ -3,8 +3,11 @@ package com.example.sheldon.reddit;
 import android.content.Context;
 
 
+import android.content.Intent;
 import android.os.AsyncTask;
 
+
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -79,6 +82,19 @@ public class MainActivity extends AppCompatActivity{
         });
 
         mlistView = (ListView)findViewById(R.id.listviewSubreddit);
+        mlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String permalink = ((Post)adapterView.getItemAtPosition(i)).getmPermalink();
+                Bundle bundle = new Bundle();
+                bundle.putString("permalink",permalink);
+
+                Fragment commentFragment = new CommentsFragment();
+                commentFragment.setArguments(bundle);
+                getSupportFragmentManager().beginTransaction().add(R.id.container,commentFragment).addToBackStack(CommentsFragment.class.getSimpleName()).commit();
+
+            }
+        });
         mlistView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView absListView, int i) {
