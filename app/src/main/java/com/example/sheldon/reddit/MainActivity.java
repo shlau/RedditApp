@@ -3,7 +3,6 @@ package com.example.sheldon.reddit;
 import android.content.Context;
 
 
-import android.content.Intent;
 import android.os.AsyncTask;
 
 
@@ -20,11 +19,13 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 
+import com.example.sheldon.reddit.Models.Comment;
 import com.example.sheldon.reddit.Models.Post;
 import com.example.sheldon.reddit.Utils.JsonParser;
 import com.example.sheldon.reddit.Utils.PostsArrayAdapter;
 
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -129,6 +130,7 @@ public class MainActivity extends AppCompatActivity{
         });
 
         initializeSpinner();
+        new CommentTask().execute("https://www.reddit.com/r/manga/comments/727tpm/disc_relife_report_198/.json?sort=top");
         loadPage(String.format(URL_FORMAT,mSubredditPath,POST_INTERVAL, nextPageQuery));
     }
 
@@ -154,6 +156,34 @@ public class MainActivity extends AppCompatActivity{
         mSwipeRefreshLayout.setRefreshing(false);
     }
 
+    private class CommentTask extends AsyncTask<String, Void, JSONObject> {
+
+        @Override
+        protected JSONObject doInBackground(String... strings) {
+            JSONObject jsonObject = null;
+            try {
+                jsonObject = JsonParser.getJSONArray(strings[0]).getJSONObject(1);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return jsonObject;
+        }
+
+        @Override
+        protected void onPostExecute(JSONObject jsonObject) {
+            ArrayList<Comment> comments = null;
+            try {
+                comments = JsonParser.getComments(jsonObject);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            Log.d("MainActivity", "onPostExecute: comments " + comments);
+        }
+    }
     /**
      * Parse json in the background and load into listview
      */
@@ -163,12 +193,14 @@ public class MainActivity extends AppCompatActivity{
         protected JSONObject doInBackground(String... strings) {
             JSONObject jsonObject = null;
             try {
-                jsonObject = JsonParser.getJSON(strings[0]);
+                jsonObject = JsonParser.getJSONObject(strings[0]);
+
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+
             return jsonObject;
         }
 

@@ -2,6 +2,7 @@ package com.example.sheldon.reddit.Utils;
 
 import android.util.Log;
 
+import com.example.sheldon.reddit.Models.Comment;
 import com.example.sheldon.reddit.Models.Post;
 
 import org.json.JSONArray;
@@ -10,6 +11,7 @@ import org.json.JSONObject;
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
@@ -33,10 +35,13 @@ public class JsonParser {
      * @throws IOException
      * @throws JSONException
      */
-    public static JSONObject getJSON(String url) throws IOException, JSONException {
+    public static JSONObject getJSONObject(String url) throws IOException, JSONException {
         return new JSONObject(IOUtils.toString( new URL(url), Charset.forName("UTF-8")));
     }
 
+    public static JSONArray getJSONArray(String url) throws IOException, JSONException {
+        return new JSONArray(IOUtils.toString(new URL(url), Charset.forName("UTF-8")));
+    }
     /**
      * Parses json to store corresponding data into an arraylist of Post models
      * @param json the JSONobject containing the data
@@ -72,6 +77,39 @@ public class JsonParser {
         return posts;
     }
 
+    public static ArrayList<Comment> getComments(JSONObject json) throws JSONException {
+        ArrayList<Comment> commentsList = new ArrayList<>();
+        ArrayList<Comment> replies = null;
+        JSONObject data = json.getJSONObject("data");
+        JSONArray children = data.getJSONArray("children");
+
+        Log.d(TAG, "getComments: length of children "  + children.length());
+        for (int i = 0; i < children.length(); i++) {
+            Comment comment = new Comment();
+
+            JSONObject cur = children.getJSONObject(i)
+                    .getJSONObject("data");
+            if(!cur.optString("replies").equals("")) {
+                JSONObject repliesObject = cur.getJSONObject("replies");
+                replies = getComments(repliesObject);
+            }
+            String author = cur.optString("author");
+            String created_utc = cur.optString("created_utc");
+            int score = Integer.valueOf(cur.optString("score"));
+            boolean score_hidden = Boolean.valueOf(cur.optString("score_hidden"));
+            String body = cur.optString("body");
+
+            comment.setReplies(replies);
+            comment.setAuthor(author);
+            Log.d(TAG, "getComments: Author is "  + author);
+            comment.setCreated_utc(created_utc);
+            comment.setScore(score);
+            comment.setBody(body);
+
+            commentsList.add(comment);
+        }
+        return commentsList;
+    }
     public static String getNextPageListing(JSONObject json) throws JSONException {
         JSONObject data = json.getJSONObject("data");
         String after = data.optString("after");
